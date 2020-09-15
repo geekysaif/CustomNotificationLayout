@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#e9ebe9"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:padding="2dp"
+        android:src="@drawable/logo" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:fontFamily="sans-serif"
+        android:padding="2dp"
+        android:text="Mohd Saif Alam"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:fontFamily="sans-serif"
+        android:padding="2dp"
+        android:text="Android Developer"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_banner" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/flashButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/cat"
+            android:text="Accept"
+            android:gravity="center"
+            android:textColor="#06430A"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/logoButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:src="@drawable/cat"
+            android:text="Reject"
+            android:textColor="#B71C1C"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

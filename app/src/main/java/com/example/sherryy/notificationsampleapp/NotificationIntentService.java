@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 /**
@@ -21,22 +21,30 @@ public class NotificationIntentService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleIntent(@Nullable final Intent intent) {
         switch (intent.getAction()) {
-            case "left":
+            case "accept":
                 Handler leftHandler = new Handler(Looper.getMainLooper());
                 leftHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        Intent intent1 = new Intent(getBaseContext(),TestActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent1);
                         Toast.makeText(getBaseContext(), "You clicked the left button", Toast.LENGTH_LONG).show();
                     }
                 });
                 break;
-            case "right":
+            case "reject":
                 Handler rightHandler = new Handler(Looper.getMainLooper());
                 rightHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        Intent intent2 = new Intent(getBaseContext(),TestActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent2);
                         Toast.makeText(getBaseContext(), "You clicked the right button", Toast.LENGTH_LONG).show();
                     }
                 });

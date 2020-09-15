@@ -1,26 +1,32 @@
 package com.example.sherryy.notificationsampleapp;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RemoteViews;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-
 public class MainActivity extends AppCompatActivity {
-
-    private String NOTIFICATION_TITLE = "Notification Sample App";
-    private String CONTENT_TEXT = "Expand me to see a detailed message!";
 
     EditText mEditText;
     Button mButton;
+
+    private static RemoteViews contentView;
+    private static Notification notification;
+    private static NotificationManager notificationManager;
+    private static final int NotificationID = 1005;
+    private static NotificationCompat.Builder mBuilder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,45 +39,48 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendNotification();
+
+                RunNotification();
             }
         });
     }
 
-    private void sendNotification() {
+    private void RunNotification() {
 
-        RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.view_expanded_notification);
-        expandedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
-        expandedView.setTextViewText(R.id.notification_message, mEditText.getText());
-        // adding action to left button
-        Intent leftIntent = new Intent(this, NotificationIntentService.class);
-        leftIntent.setAction("left");
-        expandedView.setOnClickPendingIntent(R.id.left_button, PendingIntent.getService(this, 0, leftIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        // adding action to right button
-        Intent rightIntent = new Intent(this, NotificationIntentService.class);
-        rightIntent.setAction("right");
-        expandedView.setOnClickPendingIntent(R.id.right_button, PendingIntent.getService(this, 1, rightIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(getApplicationContext(), "notify_001");
 
-        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.view_collapsed_notification);
-        collapsedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
+        contentView = new RemoteViews(getPackageName(), R.layout.notification_layout);
+       // contentView.setImageViewResource(R.id.image, R.drawable.ic_banner);
+        contentView.setTextViewText(R.id.title,  mEditText.getText().toString());
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                // these are the three things a NotificationCompat.Builder object requires at a minimum
-                .setSmallIcon(R.drawable.ic_pawprint)
-                .setContentTitle(NOTIFICATION_TITLE)
-                .setContentText(CONTENT_TEXT)
-                // notification will be dismissed when tapped
-                .setAutoCancel(true)
-                // tapping notification will open MainActivity
-                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0))
-                // setting the custom collapsed and expanded views
-                .setCustomContentView(collapsedView)
-                .setCustomBigContentView(expandedView)
-                // setting style to DecoratedCustomViewStyle() is necessary for custom views to display
-                .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
+        Intent accept = new Intent(this, NotificationIntentService.class);
+        accept.setAction("accept");
+        contentView.setOnClickPendingIntent(R.id.flashButton, PendingIntent.getService(this, 0, accept, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        // retrieves android.app.NotificationManager
-        NotificationManager notificationManager = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, builder.build());
+        Intent reject = new Intent(this, NotificationIntentService.class);
+        reject.setAction("reject");
+        contentView.setOnClickPendingIntent(R.id.logoButton, PendingIntent.getService(this, 1, reject, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        mBuilder.setSmallIcon(R.drawable.logo);
+        mBuilder.setAutoCancel(true);
+        mBuilder.setOngoing(true);
+        mBuilder.setPriority(Notification.PRIORITY_HIGH);
+        mBuilder.setOnlyAlertOnce(true);
+        mBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
+        mBuilder.setContent(contentView);
+        mBuilder.setCustomBigContentView(contentView);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "channel_id";
+            NotificationChannel channel = new NotificationChannel(channelId, "channel name", NotificationManager.IMPORTANCE_HIGH);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notificationManager.createNotificationChannel(channel);
+            mBuilder.setChannelId(channelId);
+        }
+
+        notification = mBuilder.build();
+        notificationManager.notify(NotificationID, notification);
     }
 }
