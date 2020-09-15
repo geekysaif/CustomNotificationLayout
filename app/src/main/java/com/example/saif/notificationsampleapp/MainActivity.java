@@ -71,11 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
         mBuilder.setSmallIcon(R.drawable.logo);
         mBuilder.setAutoCancel(true);
-        mBuilder.setOngoing(true);
+        mBuilder.setOngoing(false);
         mBuilder.setPriority(Notification.PRIORITY_HIGH);
         mBuilder.setOnlyAlertOnce(true);
         mBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
         mBuilder.setContent(contentView);
+
         mBuilder.setCustomBigContentView(contentView);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
