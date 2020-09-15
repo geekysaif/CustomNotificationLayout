@@ -1,4 +1,4 @@
-package com.example.sherryy.notificationsampleapp;
+package com.example.saif.notificationsampleapp;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 /**
- * Created by sherryy on 4/3/17.
+ * Created by saif on 4/3/17.
  */
 
 public class NotificationIntentService extends IntentService {
@@ -31,6 +31,7 @@ public class NotificationIntentService extends IntentService {
                         Intent intent1 = new Intent(getBaseContext(),TestActivity.class);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent1.putExtra("key","accept");
                         startActivity(intent1);
                         Toast.makeText(getBaseContext(), "You clicked the left button", Toast.LENGTH_LONG).show();
                     }
@@ -44,6 +45,7 @@ public class NotificationIntentService extends IntentService {
                         Intent intent2 = new Intent(getBaseContext(),TestActivity.class);
                         intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent2.putExtra("key","reject");
                         startActivity(intent2);
                         Toast.makeText(getBaseContext(), "You clicked the right button", Toast.LENGTH_LONG).show();
                     }

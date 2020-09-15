@@ -1,4 +1,4 @@
-package com.example.sherryy.notificationsampleapp;
+package com.example.saif.notificationsampleapp;
 
 import org.junit.Test;
 

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">NotificationSampleApp</string>
+    <string name="app_name">NotificationApp</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

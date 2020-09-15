@@ -1,4 +1,4 @@
-package com.example.sherryy.notificationsampleapp;
+package com.example.saif.notificationsampleapp;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +41,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RunNotification();
+                if (mEditText.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Please enter valid content", Toast.LENGTH_SHORT).show();
+                    mEditText.setError("Please enter valid content");
+                }else {
+                    RunNotification();
+                }
+
             }
         });
     }
